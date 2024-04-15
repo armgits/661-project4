@@ -1,0 +1,65 @@
+{
+	"remoteUser": "humble-dev",
+	"workspaceMount": "source=${localEnv:HOME}/ros-humble-workspace,target=/home/humble-dev/ros-humble-workspace,type=bind",
+	"workspaceFolder": "/home/humble-dev/ros-humble-workspace",
+
+	"build": {
+    "target": "base",  // options: "nvidia", "amd", "base" (intel/no gpu)
+
+    "args": {
+      // // Uncomment these build args only for AMD GPU config.
+			// "ROCM_VERSION": "5.7",
+			// "AMDGPU_VERSION": "5.7",
+			// "APT_PREF": "Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600"
+
+      "USERNAME": "humble-dev",
+      "USER_UID": "1000"
+		},
+
+    "dockerfile": "Dockerfile"
+	},
+
+	"runArgs": [
+		"--network=host",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined",
+		"--security-opt=apparmor:unconfined",
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--volume=/run/user:/run/user",
+		"--ipc=host",
+
+    // Comment/Uncomment based on GPU  -----------------------------------------
+
+    // "--gpus=all",  // NVIDIA GPU only
+		// "--device=/dev/kfd",  // AMD GPU only
+		// "--group-add=video",  // AMD GPU only
+    "--device=/dev/dri"  // Intel and AMD GPUs
+	],
+
+	"containerEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}",
+		"XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
+		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
+		"LIBGL_ALWAYS_SOFTWARE": "1",
+    "USERNAME": "humble-dev",
+    "WORKSPACE": "/home/humble-dev/ros-humble-workspace"
+	},
+
+	// Add-on extensions inside the container
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-iot.vscode-ros",
+				"ms-python.python",
+				"cschlosser.doxdocgen",
+				"redhat.vscode-yaml",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"yzhang.markdown-all-in-one",
+				"DavidAnson.vscode-markdownlint"
+			]
+		}
+	}
+}
