@@ -2,25 +2,29 @@
 
 set -e
 
-# This script will handle the first-time setup for your package only.
+# This script will handle the first-time setup for moveit2_tutorials package only.
+
 cd $WORKSPACE
 
-# Update this directory with your package name.
-if [ ! -d $WORKSPACE/src/<your package> ]
+if [ ! -d $WORKSPACE/src/moveit2_tutorials ]
 then
-  echo "Target package does not exist, clone that package to the source"\
-        "directory and try again."
-  exit 1
+  git clone --branch humble https://github.com/ros-planning/moveit2_tutorials src/moveit2_tutorials
 fi
 
-# Add your setup steps (Install dependencies, clone additional git repositories etc.)
+# Setup steps (Install dependencies, clone additional git repositories etc.)
 
-# Most of the dependencies should be able to install with this step. If not,
-# make sure the package manifest and CMakeLists.txt has all the required
-# dependencies listed first and then add additional steps.
-sudo apt update
-rosdep update
-rosdep install --from-paths src --ignore-src -r -y
+sudo apt update && sudo apt install -y \
+  python3-vcstool \
+  python3-colcon-common-extensions \
+  python3-colcon-mixin
+
+colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
+colcon mixin update default
+
+vcs import < src/moveit2_tutorials/moveit2_tutorials.repos
+rosdep update && rosdep install -r--from-paths src --ignore-src --ros-distro $ROS_DISTRO -y
 
 # Don't add anything else below this line.
 # User should now be able to "colcon build" your package cleanly after the script exits.
+
+# Build command after script exits: colcon build --mixin release --executor sequential

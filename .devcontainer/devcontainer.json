@@ -1,7 +1,7 @@
 {
 	"remoteUser": "humble-dev",
-	"workspaceMount": "source=${localEnv:HOME}/ros-humble-workspace,target=/home/humble-dev/ros-humble-workspace,type=bind",
-	"workspaceFolder": "/home/humble-dev/ros-humble-workspace",
+	"workspaceMount": "source=${localEnv:HOME}/661-project4,target=/home/humble-dev/661-project4,type=bind",
+	"workspaceFolder": "/home/humble-dev/661-project4",
 
 	"build": {
     "target": "base",  // options: "nvidia", "amd", "base" (intel/no gpu)
@@ -42,7 +42,7 @@
 		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
 		"LIBGL_ALWAYS_SOFTWARE": "1",
     "USERNAME": "humble-dev",
-    "WORKSPACE": "/home/humble-dev/ros-humble-workspace"
+    "WORKSPACE": "/home/humble-dev/661-project4"
 	},
 
 	// Add-on extensions inside the container

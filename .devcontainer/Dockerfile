@@ -11,7 +11,6 @@ RUN apt update && apt install -y -qq --no-install-recommends \
   git \
   gnupg \
   doxygen \
-  valgrind \
   libxext-dev \
   libglvnd0 \
   libgl1 \
