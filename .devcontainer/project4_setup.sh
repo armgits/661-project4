@@ -2,27 +2,37 @@
 
 set -e
 
-# This script will handle the first-time setup for moveit2_tutorials package only.
+# This script will handle the first-time setup for moveit2 only.
 
-cd $WORKSPACE
+cd $WORKSPACE/src
 
-if [ ! -d $WORKSPACE/src/moveit2_tutorials ]
+if [ ! -d panda_description ]
 then
-  git clone --branch humble https://github.com/ros-planning/moveit2_tutorials src/moveit2_tutorials
+  git clone -b ros2 https://github.com/ros-planning/moveit_resources.git
+  mv moveit_resources/panda_description .
+  rm -rf moveit_resources
+fi
+
+if [ ! -d moveit_task_constructor ]
+then
+  git clone -b humble https://github.com/ros-planning/moveit_task_constructor.git
 fi
 
 # Setup steps (Install dependencies, clone additional git repositories etc.)
 
+cd $WORKSPACE
+
 sudo apt update && sudo apt install -y \
-  python3-vcstool \
+  ros-humble*controller* \
+  ros-humble*joint*state* \
   python3-colcon-common-extensions \
   python3-colcon-mixin
 
 colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
 colcon mixin update default
 
-vcs import < src/moveit2_tutorials/moveit2_tutorials.repos
-rosdep update && rosdep install -r--from-paths src --ignore-src --ros-distro $ROS_DISTRO -y
+rosdep update --rosdistro $ROS_DISTRO
+rosdep install -r --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 
 # Don't add anything else below this line.
 # User should now be able to "colcon build" your package cleanly after the script exits.
