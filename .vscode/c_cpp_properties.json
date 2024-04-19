@@ -3,7 +3,9 @@
     {
       "name": "Linux",
       "includePath": [
-        "/usr/include/**"
+        "/usr/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/humble-dev/661-project4/install/**"
         // Add more include paths based on the project
       ],
       "defines": [],
