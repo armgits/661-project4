@@ -32,4 +32,4 @@ rosdep install -r --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 # Don't add anything else below this line.
 # User should now be able to "colcon build" your package cleanly after the script exits.
 
-# Build command after script exits: colcon build --mixin release --executor sequential
+# Build command after script exits: colcon build --mixin release
