@@ -1,103 +1,47 @@
 # 661 Project 4
 
-Work in progress...
+MoveIt!
 
-## Setting up
+## Setting up the workspace
 
-### Requirements
+See the [template repository](https://github.com/TerraformersURC/ros-humble-workspace)
+to learn more about the workspace and requirements to work with this project.
 
-Setting up the workspace at least requires Linux, Docker, Git and VSCode on your
-computer.
+Clone this repository to the home directory, open in VSCode and re-open in container
+using the devcontainer extension.
 
-Refer the [Docker documentation](https://docs.docker.com/engine/install/) for
-installing Docker engine. Choose to install Docker Engine with CLI over
-Docker Desktop.
+For the first time, after building the container, run the setup scripts included
+in the `.devcontainer/` folder to install all the dependencies for the workspace.
 
-> **Note:** Check the customization section to learn more about the ways to
-> make the workspace tailor-made for your project.
+Run these commands in the VSCode terminal for the first time.
 
-### Cloning the repository
+```bash
+./.devcontainer/setup.sh && source ~/.bashrc
+```
 
-Since this is a template repository, you can create your own repository with the
-current layout as a starting point if you wish to.
+```bash
+./.devcontainer/project4_setup.sh
+```
 
-Otherwise, cloning the repository to your home directory is sufficient to get
-started.
+Then build the packages in workspace
 
-### Get started with development
+```bash
+colcon build --mixin release && source install/setup.bash
+```
 
-Make sure to install Dev containers and Docker VSCode extensions on host.
+## Running the project
 
-Open the folder of workspace in VSCode and click on the remote icon at the
-bottom-left corner of the screen. Choose **Reopen in Container** to open the
-folder in the container. That option also could appear in the pop-up at the
-bottom right if VSCode detects the `.devcontainer/` folder.
+Running the project requires running commands to execute two launch files in
+seperate terminals.
 
-> **Note:** Building the container takes some time for the first time.
+Load the robot in RViz.
 
-If the container builds and runs cleanly, the development environment is
-successfully setup!! Use the terminal in VSCode to do stuff.
+```bash
+ros2 launch package_119399002 loadrobot.launch.py
+```
 
-> **Note:** Make sure the type of terminal is setup as **bash** and set the
-> default profile in the drop down menu beside the + icon.
+Run the node to move the robot.
 
-### Customizing the workspace
-
-#### GPU Access
-
-Docker can provide GPU acceleration to applications running inside the container
-if setup correctly. The steps to modify depends on the specific GPU.
-
-The repository by default is set up to support Intel iGPUs (not tested yet) or no
-GPU at all to maximize compatibility.
-
-##### For NVIDIA GPUs
-
-- Install the container toolkit on host by following the steps in [documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
-
-- In `devcontainer.json`, set the build target to `nvidia` and comment/uncomment
-  the appropriate run flags by following the comments.
-
-##### For AMD GPUs
-
-- Install ROCm software on host by following the steps in [documentation](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/tutorial/quick-start.html#rocm-amdgpu-quick).
-  It is preferable to use the Native package manager method.
-
-- In `devcontainer.json` set the build target to `amd`, uncomment the build
-  arguments and comment/uncomment the run arguments by following the comments.
-
-#### Setting a custom workspace name and directory
-
-This requires modifying the `devcontainer.json` file in the `.devcontainer/`
-directory.
-
-The `workspaceMount`, `workspaceFolder` and the `WORKSPACE` variable in the
-`containerEnv` section deal with the way Docker mounts the workspace directory
-from host onto the container.
-
-#### VSCode Extensions
-
-This requires modifying the `devcontainer.json` in the `.devcontainer/` directory.
-
-Extensions inside the container are seperate from host. Extensions from the host
-are accessible inside the container, same isn't true in reverse. So a desired
-set of add-ons specific to the workspace can be added in the container!
-
-Modify the `customizations` field inside `devcontainer.json`.
-
-#### Changing the username
-
-This requires modifying both `devcontainer.json` and `Dockerfile` in the
-`.devcontainer/` directory.
-
-Make sure the `remoteUser` field (in `devconatiner.json`) and `USERNAME` argument
-(in both `devcontainer.json` and `Dockerfile`) match to your desired username.
-
-In addition, paths mentioned across both the files that contain user directory
-might need to be updated.
-
-My suggestion: Simply find and replace the username keyword in both the files.
-
-### Credits
-
-This [article](https://www.allisonthackston.com/articles/vscode-docker-ros2) by Allison Thackston.
+```bash
+ros2 launch package_119399002 picknplace.launch.py
+```
