@@ -13,11 +13,6 @@ then
   rm -rf moveit_resources
 fi
 
-if [ ! -d moveit_task_constructor ]
-then
-  git clone -b humble https://github.com/ros-planning/moveit_task_constructor.git
-fi
-
 # Setup steps (Install dependencies, clone additional git repositories etc.)
 
 cd $WORKSPACE
